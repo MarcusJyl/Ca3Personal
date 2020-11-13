@@ -1,8 +1,10 @@
 package utils;
 
 
+import DTOs.UserInfoDTO;
 import entities.Role;
 import entities.User;
+import entities.UserInfo;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -23,19 +25,28 @@ public class SetupTestUsers {
     User user = new User("user", "test2");
     User admin = new User("admin", "test2");
     User both = new User("user_admin", "test2");
+   
+    
 
     if(admin.getUserPass().equals("test")||user.getUserPass().equals("test")||both.getUserPass().equals("test"))
       throw new UnsupportedOperationException("You have not changed the passwords");
 
     em.getTransaction().begin();
+     UserInfoDTO userNavn = new UserInfoDTO("per");
+    UserInfo userInfo = new UserInfo().setInfo(userNavn);
     Role userRole = new Role("user");
     Role adminRole = new Role("admin");
+    
+    
     user.addRole(userRole);
     admin.addRole(adminRole);
     both.addRole(userRole);
     both.addRole(adminRole);
+    user.setUserinfo(userInfo);
+    
     em.persist(userRole);
     em.persist(adminRole);
+    em.persist(userInfo);
     em.persist(user);
     em.persist(admin);
     em.persist(both);
