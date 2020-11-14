@@ -57,7 +57,7 @@ public class UserResource {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public String make(String user) throws InvalidInputException {
+    public String makeUser(String user) throws InvalidInputException {
         List<String> roles = new ArrayList();
         roles.add("user");
         UserDTO userDTO = GSON.fromJson(user, UserDTO.class);
@@ -100,7 +100,7 @@ public class UserResource {
 
         return GSON.toJson(new UserDTO(user));
     }
-
+    
     @GET
     @Path("info")
     @Produces(MediaType.APPLICATION_JSON)
@@ -113,10 +113,12 @@ public class UserResource {
             TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.userName = :userName", User.class);
             query.setParameter("userName", name);
             User user = query.getSingleResult();
-            return GSON.toJson(new UserInfoDTO(name));
+            return GSON.toJson(new UserInfoDTO(user.getUserName()));
         } catch (Exception e) {
             throw new InvalidInputException(String.format("Could not find a user with your name (%s)", name));
         }
     }
 }
+
+
 
