@@ -3,6 +3,7 @@ package rest;
 import java.util.Set;
 import javax.ws.rs.core.Application;
 
+
 @javax.ws.rs.ApplicationPath("api")
 public class ApplicationConfig extends Application {
 
@@ -20,7 +21,7 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
-        resources.add(CorsFilter.class);
+        resources.add(cors.CorsFilter.class);
         resources.add(errorhandling.GenericExceptionMapper.class);
         resources.add(errorhandling.InvalidInputExceptionMapper.class);
         resources.add(org.glassfish.jersey.server.wadl.internal.WadlResource.class);
