@@ -101,23 +101,7 @@ public class UserResource {
         return GSON.toJson(new UserDTO(user));
     }
     
-    @GET
-    @Path("info")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    @RolesAllowed({"admin", "user"})
-    public String getUserInfo() throws InvalidInputException {
-        EntityManager em = EMF.createEntityManager();
-        String name = securityContext.getUserPrincipal().getName();
-        try {
-            TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.userName = :userName", User.class);
-            query.setParameter("userName", name);
-            User user = query.getSingleResult();
-            return GSON.toJson(new UserInfoDTO(user.getUserName()));
-        } catch (Exception e) {
-            throw new InvalidInputException(String.format("Could not find a user with your name (%s)", name));
-        }
-    }
+ 
 }
 
 

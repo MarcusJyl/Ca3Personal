@@ -1,6 +1,7 @@
 package facades;
 
 import DTOs.UserDTO;
+import DTOs.UserInfoDTO;
 import entities.Role;
 import entities.User;
 import errorhandling.InvalidInputException;
@@ -63,6 +64,8 @@ public class UserFacade {
         User user = new User(userDTO.getName(), userDTO.getPassword());
         for (String role : userDTO.getRoles()) {
             user.addRole(new Role(role));
+            
+            
         }
         em.getTransaction().begin();
         em.persist(user);
