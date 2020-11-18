@@ -51,6 +51,7 @@ public class UserFacade {
     public UserDTO addUser(UserDTO userDTO) throws InvalidInputException {
         EntityManager em = emf.createEntityManager();
         String name = null;
+        
         try {
             Query query = em.createQuery("SELECT u.userName FROM User u WHERE u.userName = :name");
             query.setParameter("name", userDTO.getName());
@@ -62,11 +63,12 @@ public class UserFacade {
         }
 
         User user = new User(userDTO.getName(), userDTO.getPassword());
+        
         for (String role : userDTO.getRoles()) {
             user.addRole(new Role(role));
-            
-            
         }
+        user.getUserinfo();
+        
         em.getTransaction().begin();
         em.persist(user);
         em.getTransaction().commit();

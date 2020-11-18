@@ -32,8 +32,11 @@ public class SetupTestUsers {
       throw new UnsupportedOperationException("You have not changed the passwords");
 
     em.getTransaction().begin();
-     UserInfoDTO userNavn = new UserInfoDTO("per");
-    UserInfo userInfo = new UserInfo().setInfo(userNavn);
+
+    
+    UserInfo userInfo = new UserInfo().setInfo(new UserInfoDTO("per"));
+    UserInfo userInfo2 = new UserInfo().setInfo(new UserInfoDTO("Jurgen"));
+    UserInfo userInfo3 = new UserInfo().setInfo(new UserInfoDTO("mogens"));
     Role userRole = new Role("user");
     Role adminRole = new Role("admin");
     
@@ -43,10 +46,14 @@ public class SetupTestUsers {
     both.addRole(userRole);
     both.addRole(adminRole);
     user.setUserinfo(userInfo);
+    admin.setUserinfo(userInfo2);
+    both.setUserinfo(userInfo3);
     
     em.persist(userRole);
     em.persist(adminRole);
     em.persist(userInfo);
+    em.persist(userInfo2);
+    em.persist(userInfo3);
     em.persist(user);
     em.persist(admin);
     em.persist(both);

@@ -28,13 +28,13 @@ public class UserInfo implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
+    private String fname;
 
     public UserInfo() {
     }
 
     public UserInfo setInfo(UserInfoDTO userInfoDTO) {
-        this.name = userInfoDTO.getfName();
+        this.fname = userInfoDTO.getfName();
         
         return this;
     }
@@ -49,11 +49,11 @@ public class UserInfo implements Serializable {
     
 
     public String getName() {
-        return name;
+        return fname;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String fname) {
+        this.fname = fname;
     }
     
     

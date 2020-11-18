@@ -7,6 +7,7 @@ package rest;
 
 import DTOs.UserDTO;
 import DTOs.UserInfoDTO;
+import DTOs.UsersDTO;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import entities.User;
@@ -34,13 +35,12 @@ import utils.EMF_Creator;
  *
  * @author Marcus
  */
-    @Path("user")
+@Path("user")
 public class UserResource {
-
 
     private static final EntityManagerFactory EMF = EMF_Creator.createEntityManagerFactory();
     private static final UserFacade FACADE = UserFacade.getUserFacade(EMF);
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();       
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
     @Context
     private UriInfo context;
@@ -61,7 +61,7 @@ public class UserResource {
         List<String> roles = new ArrayList();
         roles.add("user");
         UserDTO userDTO = GSON.fromJson(user, UserDTO.class);
-        userDTO = new UserDTO(userDTO.getName(), userDTO.getPassword(), roles);
+    
         userDTO = FACADE.addUser(userDTO);
 
         return GSON.toJson(userDTO);
@@ -80,7 +80,7 @@ public class UserResource {
         User user = null;
 
         try {
-            TypedQuery<User> query = em.createQuery("SELECT u FROM User u WH ERE u.userName = :userName", User.class);
+            TypedQuery<User> query = em.createQuery("SELECT u FROM User u WHERE u.userName = :userName", User.class);
             query.setParameter("userName", thisuser);
             user = query.getSingleResult();
             UserInfo userInfo = user.getUserinfo();
@@ -100,9 +100,24 @@ public class UserResource {
 
         return GSON.toJson(new UserDTO(user));
     }
-    
- 
+
+    @GET
+    @Path("info")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @RolesAllowed({"admin", "user"})
+    public String getUserInfo() throws InvalidInputException {
+        EntityManager em = EMF.createEntityManager();
+        String name = securityContext.getUserPrincipal().getName();
+            TypedQuery<User> query = em.createQuery("SELECT u FROM User u ", User.class);
+
+            List<User> users = query.getResultList();
+            UsersDTO usersDTO = new UsersDTO(users);
+            return GSON.toJson(usersDTO);
+//        try {
+//            
+//        } catch (Exception e) {
+//           // throw new InvalidInputException(String.format("Could not find a user with your name (%s)", name));
+//        }return "pis";
+    }
 }
-
-
-

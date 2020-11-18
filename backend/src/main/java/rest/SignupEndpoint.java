@@ -1,11 +1,13 @@
 package rest;
 
 import DTOs.UserDTO;
+import DTOs.UserInfoDTO;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import entities.User;
+import entities.UserInfo;
 import errorhandling.InvalidInputException;
 import facades.UserFacade;
 import java.util.ArrayList;
@@ -54,7 +56,7 @@ public class SignupEndpoint {
         List<String> roles = new ArrayList();
         roles.add("user");
         UserDTO userDTO = GSON.fromJson(user, UserDTO.class);
-        userDTO = new UserDTO(userDTO.getName(), userDTO.getPassword(), roles);
+        
         userDTO = FACADE.addUser(userDTO);
 
         return GSON.toJson(userDTO);
